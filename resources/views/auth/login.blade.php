@@ -21,14 +21,18 @@
         </div>
 
         <!-- Login Form -->
-        <form action="{{ route('dashboard') }}" method="GET" class="space-y-4">
+        @if ($errors->any())
+            <div class="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-700">{{ $errors->first() }}</div>
+        @endif
+        <form action="{{ route('login.store') }}" method="POST" class="space-y-4">
+            @csrf
             <div>
                 <label class="block text-xs font-bold text-[#2c4d41] mb-1.5">Work Email</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#427863]">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
-                    <input type="email" value="olivia.carter@nexoracrm.com" required class="w-full pl-10 pr-4 py-3 text-xs font-semibold rounded-xl glass-input text-[#1b382b] focus:outline-none">
+                    <input type="email" name="email" value="{{ old('email') }}" autocomplete="username" required class="w-full pl-10 pr-4 py-3 text-xs font-semibold rounded-xl glass-input text-[#1b382b] focus:outline-none">
                 </div>
             </div>
 
@@ -38,13 +42,13 @@
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#427863]">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </div>
-                    <input type="password" value="••••••••••••" required class="w-full pl-10 pr-4 py-3 text-xs font-semibold rounded-xl glass-input text-[#1b382b] focus:outline-none">
+                    <input type="password" name="password" autocomplete="current-password" required class="w-full pl-10 pr-4 py-3 text-xs font-semibold rounded-xl glass-input text-[#1b382b] focus:outline-none">
                 </div>
             </div>
 
             <div class="flex items-center justify-between text-xs pt-1">
                 <label class="flex items-center gap-2 text-[#2c4d41] cursor-pointer">
-                    <input type="checkbox" checked class="w-4 h-4 rounded text-[#58967d] focus:ring-[#58967d] border-emerald-300">
+                    <input type="checkbox" name="remember" value="1" class="w-4 h-4 rounded text-[#58967d] focus:ring-[#58967d] border-emerald-300">
                     <span class="font-medium">Remember 30 days</span>
                 </label>
                 <a href="#" class="text-[#58967d] font-bold hover:underline">Forgot password?</a>
@@ -64,9 +68,9 @@
         </div>
 
         <!-- Demo Sign-In Action -->
-        <a href="{{ route('dashboard') }}" class="w-full py-3 px-4 rounded-xl glass-card flex items-center justify-center gap-3 text-xs font-bold text-[#1b382b] hover:bg-white/90 transition-all border border-white/80">
+        <a href="{{ route('demo.enter') }}" class="w-full py-3 px-4 rounded-xl glass-card flex items-center justify-center gap-3 text-xs font-bold text-[#1b382b] hover:bg-white/90 transition-all border border-white/80">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Launch Live Demo Workspace (Olivia Carter)</span>
+            <span>Launch Demo Workspace · No account required</span>
         </a>
 
         <!-- Footer terms -->

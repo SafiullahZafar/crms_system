@@ -11,7 +11,7 @@
     <div class="glass-card kpi-accent-emerald p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h1 class="text-xl font-extrabold text-[#1b382b] flex items-center gap-2">
-                Good morning, Olivia <span class="animate-bounce inline-block">👋</span>
+                {{ ($demoMode ?? false) ? 'Welcome to your demo workspace' : 'Good morning, '.(auth()->user()?->name ?? 'there') }} <span class="animate-bounce inline-block">👋</span>
             </h1>
             <p class="text-xs text-[#427863] mt-1 font-medium">
                 Here's your real-time CRM intelligence report &mdash; <span class="text-[#58967d] font-bold">Q3 is on track</span> with 28% revenue growth.
@@ -19,7 +19,7 @@
             <div class="flex items-center gap-3 mt-2">
                 <span class="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-800 border border-emerald-500/20 flex items-center gap-1">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
-                    Live Data
+                    {{ ($demoMode ?? false) ? 'Sample Data · Demo' : 'Live Data' }}
                 </span>
                 <span class="text-[10px] text-[#427863] font-medium">Mon, Sep 10, 2026 &bull; Q3 Sales Quarter</span>
             </div>
@@ -32,7 +32,7 @@
                     <div class="progress-fill" style="width: 86.2%;"></div>
                 </div>
             </div>
-            <button @click="quickModalOpen = true"
+            <button @click="quickModalOpen = true" @if($demoMode ?? false) disabled title="Demo-only" @endif
                     class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#58967d] to-[#2c4d41] text-white text-xs font-bold shadow-md shadow-[#366050]/20 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Add Quick Lead
