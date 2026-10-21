@@ -24,4 +24,9 @@ class DemoVisitor extends Model
     {
         return $this->hasMany(DemoRecord::class);
     }
+
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
 }

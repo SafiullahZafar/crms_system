@@ -29,12 +29,21 @@
                 <option>Q2 2026</option>
                 <option>Full Year 2026</option>
             </select>
-            <button class="px-3 py-1.5 rounded-xl glass-pill text-xs font-bold text-[#2c4d41] hover:bg-white/50 flex items-center gap-1.5">
+            <a href="{{ route((request()->routeIs('demo.*') ? 'demo.' : '').'reports.export', ['type' => 'monthly']) }}" class="px-3 py-1.5 rounded-xl glass-pill text-xs font-bold text-[#2c4d41] hover:bg-white/50 flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 Export
-            </button>
+            </a>
         </div>
     </div>
+
+    <section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        @foreach ([['Daily report', 'reports.daily'], ['Monthly report', 'reports.monthly'], ['Task report', 'reports.tasks'], ['Activity report', 'reports.activities'], ['Reports by module', 'reports.modules']] as [$reportLabel, $reportName])
+            <a href="{{ route((request()->routeIs('demo.*') ? 'demo.' : '').$reportName) }}" class="glass-card p-4 transition hover:-translate-y-0.5 hover:bg-white/90">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800">Open report</span>
+                <h2 class="mt-1 text-xs font-extrabold text-[#1b382b]">{{ $reportLabel }}</h2>
+            </a>
+        @endforeach
+    </section>
 
     {{-- REPORT KPI ROW --}}
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">

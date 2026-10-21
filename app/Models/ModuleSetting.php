@@ -17,6 +17,7 @@ class ModuleSetting extends Model
         'calendar' => 'Calendar',
         'activities' => 'Activities',
         'reports' => 'Reports',
+        'expenses' => 'Expenses',
         'automation' => 'Automation',
         'team' => 'Team',
         'settings' => 'Settings',

@@ -64,6 +64,16 @@ class DemoController extends Controller
             });
         }
 
+        if ($demoVisitor->expenses_seeded_at === null) {
+            DB::transaction(function () use ($demoVisitor): void {
+                $lockedVisitor = DemoVisitor::query()->lockForUpdate()->findOrFail($demoVisitor->id);
+
+                if ($lockedVisitor->expenses_seeded_at === null) {
+                    $this->seedExpenses($lockedVisitor);
+                }
+            });
+        }
+
         if ($demoSession && ! $demoSession->demo_visitor_id) {
             $demoSession->update([
                 'demo_visitor_id' => $demoVisitor->id,
@@ -316,6 +326,32 @@ class DemoController extends Controller
         }
 
         $visitor->forceFill(['workspace_seeded_at' => now()])->save();
+    }
+
+    private function seedExpenses(DemoVisitor $visitor): void
+    {
+        $expenses = [
+            ['fixed', 'Electricity', 'Office electricity bill', 185.50],
+            ['fixed', 'Gas', 'Monthly gas service', 74.25],
+            ['fixed', 'Rent', 'Workspace rent', 1250.00],
+            ['fixed', 'Internet', 'Business internet plan', 89.99],
+            ['variable', 'Travel', 'Client visit travel', 142.80],
+            ['variable', 'Office supplies', 'Printer and stationery supplies', 63.40],
+            ['variable', 'Meals', 'Team meeting lunch', 98.75],
+        ];
+
+        foreach ($expenses as [$type, $category, $title, $amount]) {
+            $visitor->expenses()->create([
+                'type' => $type,
+                'category' => $category,
+                'title' => $title,
+                'amount' => $amount,
+                'expense_date' => today(),
+                'notes' => 'Private demo sample expense.',
+            ]);
+        }
+
+        $visitor->forceFill(['expenses_seeded_at' => now()])->save();
     }
 
     private function readToken(Request $request): ?string

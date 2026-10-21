@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DemoController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SuperAdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +61,18 @@ Route::middleware('auth')->group(function (): void {
         return view('crm.reports');
     })->middleware('module:reports')->name('reports');
 
+    Route::get('/reports/modules', [ReportController::class, 'moduleIndex'])->middleware('module:reports')->name('reports.modules');
+    Route::get('/reports/modules/{module}', [ReportController::class, 'module'])->where('module', '[a-z]+')->middleware('module:reports')->name('reports.module');
+    Route::get('/reports/daily', [ReportController::class, 'daily'])->middleware('module:reports')->name('reports.daily');
+    Route::get('/reports/monthly', [ReportController::class, 'monthly'])->middleware('module:reports')->name('reports.monthly');
+    Route::get('/reports/tasks', [ReportController::class, 'tasks'])->middleware('module:reports')->name('reports.tasks');
+    Route::get('/reports/activities', [ReportController::class, 'activities'])->middleware('module:reports')->name('reports.activities');
+    Route::get('/reports/export/{type}/{module?}', [ReportController::class, 'export'])->where(['type' => '[a-z]+', 'module' => '[a-z]+'])->middleware('module:reports')->name('reports.export');
+
+    Route::get('/expenses', [ExpenseController::class, 'index'])->middleware('module:expenses')->name('expenses');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->middleware('module:expenses')->name('expenses.store');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->middleware('module:expenses')->name('expenses.destroy');
+
     Route::get('/automation', function () {
         return view('crm.automation');
     })->middleware('module:automation')->name('automation');
@@ -94,4 +108,16 @@ Route::middleware('throttle:120,1')->prefix('demo')->name('demo.')->group(functi
             return view('crm.'.$page, $controller->recordsFor($request, $page));
         })->middleware('module:'.$page)->name($page);
     }
+
+    Route::get('/expenses', [ExpenseController::class, 'index'])->middleware('module:expenses')->name('expenses');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->middleware('module:expenses')->name('expenses.store');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->middleware('module:expenses')->name('expenses.destroy');
+
+    Route::get('/reports/modules', [ReportController::class, 'moduleIndex'])->middleware('module:reports')->name('reports.modules');
+    Route::get('/reports/modules/{module}', [ReportController::class, 'module'])->where('module', '[a-z]+')->middleware('module:reports')->name('reports.module');
+    Route::get('/reports/daily', [ReportController::class, 'daily'])->middleware('module:reports')->name('reports.daily');
+    Route::get('/reports/monthly', [ReportController::class, 'monthly'])->middleware('module:reports')->name('reports.monthly');
+    Route::get('/reports/tasks', [ReportController::class, 'tasks'])->middleware('module:reports')->name('reports.tasks');
+    Route::get('/reports/activities', [ReportController::class, 'activities'])->middleware('module:reports')->name('reports.activities');
+    Route::get('/reports/export/{type}/{module?}', [ReportController::class, 'export'])->where(['type' => '[a-z]+', 'module' => '[a-z]+'])->middleware('module:reports')->name('reports.export');
 });
